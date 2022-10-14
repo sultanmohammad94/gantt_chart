@@ -1,5 +1,4 @@
 from django.db import models
-
 class Task(models.Model):
     """This class represnts a DXHTML Task."""
     
@@ -11,6 +10,9 @@ class Task(models.Model):
     progress = models.FloatField()
     parent = models.CharField(max_length = 150)
     
+    def __repr__(self) -> str:
+        return self.text
+    
     
     
 class Link(models.Model):
@@ -20,3 +22,5 @@ class Link(models.Model):
     type = models.CharField(max_length = 150)
     lag = models.IntegerField(blank = True, default = 0)
     
+    def __repr__(self) -> str:
+        return self.id
