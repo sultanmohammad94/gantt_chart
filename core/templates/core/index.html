@@ -18,7 +18,13 @@
     gantt.config.open_tree_initially = true;
     gantt.config.fit_tasks = true; 
     gantt.init("gantt_here");
-    gantt.load('/data/', "json");
+    gantt.load("/data/", "json");
+ 
+    const dp = new gantt.dataProcessor("/data/");
+    dp.init(gantt);
+    dp.setTransactionMode("REST");
     </script>
+
+    
 </body>
 </html>
