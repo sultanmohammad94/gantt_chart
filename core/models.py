@@ -16,6 +16,8 @@ class Task(models.Model):
     
     
 class Link(models.Model):
+    """This class is responsible for linking DXHTML Tasks."""
+    
     id = models.AutoField(primary_key = True, editable = False)
     source = models.CharField(max_length = 150)
     target = models.CharField(max_length = 150)
@@ -23,4 +25,4 @@ class Link(models.Model):
     lag = models.IntegerField(blank = True, default = 0)
     
     def __repr__(self) -> str:
-        return self.id
+        return str(self.id)
