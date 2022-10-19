@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Task, Link
 from .serializers import TaskSerializer, LinkSerializer
+from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
     return render(request, "core/index.html")
@@ -23,12 +24,12 @@ def data_list(request, offset):
             "links":linkData.data,
         })
         
-
 @api_view(['POST'])
 def task_add(request):
     is_post_request = True if request.method == "POST" else False
     
     if is_post_request:
+        print('Request ', request.data)
         task_serializer = TaskSerializer(data=request.data)
         if task_serializer.is_valid():
             task = task_serializer.save()
@@ -91,7 +92,36 @@ def link_update(request, pk):
     if request.method == 'DELETE':
         link.delete()
         return JsonResponse({'action':'deleted'})
-        
     
-            
+@csrf_exempt
+def get_erpnext_tasks(request):
+    is_post = True if request.method == "POST" else False
+    if is_post:
+        json_data = {}
+        post_data = dict(request.POST.lists())
+        for data in post_data:
+            json_data = json.loads(data)
+          
+        print(f'>>Json Data = {json_data}')   
+        # is_group = json_data['is_group']
+        # if is_group:
+        #     task = Task.objects.create(
+        #         text = json_data['subject'],
+        #         start_date = json_data['exp_start_date'],
+        #         end_date = json_data['exp_end_date'],
+        #         duration = json_data['duration'],
+        #         progress = json_data['progress'],
+        #         parent = "0"
+        #     )
+        # elif not is_group:
+        #     task = Task.objects.create(
+        #         text = json_data['subject'],
+        #         start_date = json_data['exp_start_date'],
+        #         end_date = json_data['exp_end_date'],
+        #         duration = json_data['duration'],
+        #         progress = json_data['progress'],
+        #         parent = json_data['parent_task']
+        #     )
+        # task.save()
         
+    return HttpResponse("Hello ERP")
